@@ -1,7 +1,9 @@
 import 'package:expense_record/theme/colors.dart';
+import 'package:expense_record/widgets/date_time_field.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,6 +145,9 @@ class HomeView extends StatelessWidget {
                       backgroundColor: AppColors.lightGreen.withOpacity(.8),
                       shape: CircleBorder(),
                       onPressed: (){
+                        String? selectedDate;
+                        final TextEditingController amountController = TextEditingController();
+
                         showDialog(
                           context: context,
                           builder: (context) {
@@ -151,18 +156,15 @@ class HomeView extends StatelessWidget {
                               title: const Text("Add Expense",style: TextStyle(color: AppColors.lightGreen),),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      labelText: "Expense Date",
-                                      prefixIcon: Icon(Icons.calendar_month_outlined, color: AppColors.darkGreen),
-                                      labelStyle: TextStyle(color: AppColors.darkGreen),
-                                      border: OutlineInputBorder(),
-                                    ),
-                                    style: TextStyle(color: AppColors.lightGreen),
+                                children: [
+                                  DateField(
+                                    onDateSelected: (date) {
+                                    selectedDate = date;
+                                  },
                                   ),
                                   SizedBox(height: 12),
                                   TextField(
+                                    controller: amountController,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       labelText: "Amount",
@@ -185,7 +187,10 @@ class HomeView extends StatelessWidget {
                                     foregroundColor: AppColors.white,    // text (and icon) color
                                   ),
                                   onPressed: () {
-                                    // TODO: handle save logic here
+                                    final amount = amountController.text;
+                                    debugPrint("📅 Date: $selectedDate");
+                                    debugPrint("💰 Amount: $amount");
+
                                     Navigator.pop(context);
                                   },
                                   child: const Text("Save"),
